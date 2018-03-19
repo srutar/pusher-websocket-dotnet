@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+    <RootNamespace>PusherClient</RootNamespace>
+    <AssemblyName>PusherClient</AssemblyName>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+ <ItemGroup>
+   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+   <PackageReference Include="System.Configuration.Abstractions" Version="2.0.2.37" />
+   <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+ </ItemGroup>
+</Project>
