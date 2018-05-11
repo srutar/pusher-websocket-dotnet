@@ -68,7 +68,7 @@ namespace PusherClient
             _websocket.Opened += websocket_Opened;
             _websocket.Error += websocket_Error;
             _websocket.Closed += websocket_Closed;
-            _websocket.MessageReceived += websocket_MessageReceived;
+            _websocket.MessageReceived += websocket_MessageReceivedSafe;
             _websocket.Open();
         }
 
@@ -79,7 +79,7 @@ namespace PusherClient
             _websocket.Opened -= websocket_Opened;
             _websocket.Error -= websocket_Error;
             _websocket.Closed -= websocket_Closed;
-            _websocket.MessageReceived -= websocket_MessageReceived;
+            _websocket.MessageReceived -= websocket_MessageReceivedSafe;
             _websocket.Close();
 
             ChangeState(ConnectionState.Disconnected);
@@ -118,6 +118,18 @@ namespace PusherClient
             else
             {
                 Pusher.Trace.TraceEvent(TraceEventType.Error, 0, error.ToString());
+            }
+        }
+
+        private void websocket_MessageReceivedSafe(object sender, MessageReceivedEventArgs e)
+        {
+            try
+            {
+                websocket_MessageReceived(sender, e);
+            }
+            catch (Exception exception)
+            {
+                RaiseError(new PusherException(exception.ToString(), ErrorCodes.Unkown));
             }
         }
 

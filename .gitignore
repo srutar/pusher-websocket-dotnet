@@ -5,6 +5,7 @@ Backup
 Download
 [Bb]in
 [Oo]bj
+[Oo]bj_core
 *.suo
 *.user
 PusherRESTDotNet/PusherRESTDotNet.1.0.nupkg

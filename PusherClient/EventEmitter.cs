@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PusherClient
 {
@@ -49,22 +50,29 @@ namespace PusherClient
 
         internal void EmitEvent(string eventName, string data)
         {
-            var obj = JsonConvert.DeserializeObject<dynamic>(data);
-
-            // Emit to general listeners regardless of event type
-            foreach (var action in _generalListeners)
+            try
             {
-                action(eventName, obj);
-            }
+                var obj = JsonConvert.DeserializeObject<dynamic>(data);
 
-            if (_eventListeners.ContainsKey(eventName))
-            {
-                foreach (var action in _eventListeners[eventName])
+                // Emit to general listeners regardless of event type
+                foreach (var action in _generalListeners)
                 {
-                    action(obj);
+                    action(eventName, obj);
                 }
-            }
 
+                if (_eventListeners.ContainsKey(eventName))
+                {
+                    foreach (var action in _eventListeners[eventName])
+                    {
+                        action(obj);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Pusher.Trace.TraceEvent(TraceEventType.Error, 0, e.ToString());
+            }
         }
     }
 }
